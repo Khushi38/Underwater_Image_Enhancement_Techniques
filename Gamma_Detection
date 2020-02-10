@@ -1,0 +1,24 @@
+import cv2
+import numpy as np
+
+def adjust_gamma(image, gamma):
+    if(gamma == 0):
+        gamma = 0.01
+    invGamma = 1.0 / gamma
+    print(image/255)
+    out = np.array(((image/ 255.0) ** invGamma) * 255).astype("uint8")
+    # apply gamma correction using the lookup table
+    return out
+    
+cv2.namedWindow('img')
+cv2.createTrackbar("gamma", "img",1, 300,setgamma)
+#cap = cv2.VideoCapture(1)
+while(True):
+    img=cv2.imread(r'C:\Users\Welcome\Desktop\underwater.png')
+    ga = cv2.getTrackbarPos("gamma","img")
+    out = adjust_gamma(img,gamma = ga/100)
+    cv2.imshow('img',out)
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+#cap.release()
+cv2.destroyAllWindows()
